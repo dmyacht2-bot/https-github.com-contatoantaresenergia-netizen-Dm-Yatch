@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingCart, Star, Heart, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
@@ -7,25 +7,33 @@ interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  image: string;
+  image_1: string;
+  image_2?: string;
   brand: string;
   rating: number;
   isNew?: boolean;
-  key?: string;
 }
 
-export default function ProductCard({ id, name, price, image, brand, rating, isNew }: ProductCardProps) {
+export default function ProductCard({ id, name, price, image_1, image_2, brand, rating, isNew }: ProductCardProps) {
+  const [hovered, setHovered] = useState(false);
+
+  const currentImage = hovered && image_2 ? image_2 : image_1;
+
   return (
-    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+    <div
+      className="bg-white rounded-lg border border-slate-200 overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col h-full"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-slate-50">
-        <img 
-          src={image} 
-          alt={name} 
-          className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+        <img
+          src={currentImage}
+          alt={name}
+          className="w-full h-full object-contain p-4 transition-all duration-500 group-hover:scale-105"
           referrerPolicy="no-referrer"
         />
-        
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {isNew && (
@@ -57,16 +65,19 @@ export default function ProductCard({ id, name, price, image, brand, rating, isN
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{brand}</span>
-        <Link to={`/product/${id}`} className="text-primary font-bold hover:text-accent transition-colors mb-2 line-clamp-2 leading-tight">
+        <Link
+          to={`/product/${id}`}
+          className="text-primary font-bold hover:text-accent transition-colors mb-2 line-clamp-2 leading-tight"
+        >
           {name}
         </Link>
-        
+
         <div className="flex items-center gap-1 mb-4">
           {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              size={12} 
-              className={cn(i < rating ? "text-yellow-400 fill-yellow-400" : "text-slate-200")} 
+            <Star
+              key={i}
+              size={12}
+              className={cn(i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200')}
             />
           ))}
           <span className="text-[10px] text-slate-400 ml-1">(24)</span>
