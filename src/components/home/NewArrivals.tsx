@@ -8,7 +8,8 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  image: string;
+  image_1: string;
+  image_2: string;
   brand: string;
   description: string;
   category: string;
@@ -24,8 +25,8 @@ export default function NewArrivals() {
       try {
         const { data, error } = await supabase
           .from('produtos')
-          .select('id, name, price, image, brand, description, category')
-          .order('id', { ascending: false })
+          .select('id, name, price, image_1, image_2, brand, description, category')
+          .order('created_at', { ascending: false })
           .limit(4);
 
         if (error) throw error;
@@ -88,7 +89,8 @@ export default function NewArrivals() {
                 id={product.id}
                 name={product.name}
                 price={product.price}
-                image={product.image}
+                image_1={product.image_1}
+                image_2={product.image_2}
                 brand={product.brand}
                 rating={5}
                 isNew={true}
