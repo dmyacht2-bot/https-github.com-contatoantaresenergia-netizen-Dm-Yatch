@@ -8,7 +8,8 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  image: string;
+  image_1: string;
+  image_2: string;
   brand: string;
   description: string;
   category: string;
@@ -24,7 +25,7 @@ export default function FeaturedProducts() {
       try {
         const { data, error } = await supabase
           .from('produtos')
-          .select('id, name, price, image, brand, description, category')
+          .select('id, name, price, image_1, image_2, brand, description, category')
           .limit(4);
 
         if (error) throw error;
@@ -89,7 +90,8 @@ export default function FeaturedProducts() {
                 id={product.id}
                 name={product.name}
                 price={product.price}
-                image={product.image}
+                image_1={product.image_1}
+                image_2={product.image_2}
                 brand={product.brand}
                 rating={5}
                 isNew={false}
